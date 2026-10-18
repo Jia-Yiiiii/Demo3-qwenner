@@ -32,14 +32,6 @@ Demo3-qwenner/
 ```bash
 pip install -r requirements.txt
 ```
-
-> **注意**：由于 `torch==2.9.1+cu128` 是 CUDA 12.8 专用版本，建议显式指定 PyTorch 官方索引源：
->
-> ```bash
-> pip install torch==2.9.1+cu128 --index-url https://download.pytorch.org/whl/cu128
-> pip install -r requirements.txt --no-deps
-> ```
-
 ---
 
 ## 下载模型
@@ -68,7 +60,7 @@ python modeldownload.py
 python train.py --config_path configs/lora-all-line.json
 ```
 
-LoRA 配置中的主要参数：
+LoRA 配置中的主要参数（只列举了部分参数）：
 
 | 参数 | 值 |
 |------|-----|
@@ -92,7 +84,7 @@ LoRA 配置中的主要参数：
 python train.py --config_path configs/qlora-all-line.json
 ```
 
-QLoRA 配置中的主要参数：
+QLoRA 配置中的主要参数（只列举了部分参数）：
 
 | 参数 | 值 |
 |------|-----|
