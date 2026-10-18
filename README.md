@@ -25,13 +25,9 @@ Demo3-qwenner/
 
 ## 环境安装
 
-建议使用支持 CUDA 和 BF16 的 NVIDIA GPU 环境。
-
 ```bash
-pip install torch transformers peft bitsandbytes safetensors tqdm swanlab modelscope
+pip install -r requirements.txt
 ```
-
-实际使用时，应根据 CUDA 版本安装对应的 PyTorch 和 bitsandbytes 版本。
 
 ## 下载模型
 
