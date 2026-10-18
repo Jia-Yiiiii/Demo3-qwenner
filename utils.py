@@ -1,7 +1,5 @@
 import json
 import random
-from collections import Counter
-
 import numpy as np
 import torch
 from transformers import AutoModelForCausalLM, BitsAndBytesConfig
@@ -22,7 +20,6 @@ def set_seed(seed=42):
         torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
-
 
 
 class NerUtils:
@@ -46,17 +43,8 @@ class NerUtils:
         model = AutoModelForCausalLM.from_pretrained(
             config["model_path"], **load_args
         )
-
         if mode == "qlora":
-            model = prepare_model_for_kbit_training(
-                model,
-                use_gradient_checkpointing=config.get("gradient_checkpointing", False),
-                gradient_checkpointing_kwargs={"use_reentrant": False},
-            )
-        elif config.get("gradient_checkpointing", False):
-            model.gradient_checkpointing_enable(
-                gradient_checkpointing_kwargs={"use_reentrant": False}
-            )
+            model = prepare_model_for_kbit_training(model)
 
         model = get_peft_model(
             model,
@@ -71,29 +59,7 @@ class NerUtils:
         )
         model.enable_input_require_grads()
         model.config.use_cache = False
-        model.print_trainable_parameters()
         return model
-
-    @staticmethod
-    def load_trained_model(config):
-        load_args = {
-            "torch_dtype": torch.bfloat16,
-            "trust_remote_code": True,
-            "low_cpu_mem_usage": True,
-        }
-        if config.get("train_mode", "lora").lower() == "qlora":
-            load_args["quantization_config"] = BitsAndBytesConfig(
-                load_in_4bit=True,
-                bnb_4bit_quant_type="nf4",
-                bnb_4bit_use_double_quant=True,
-                bnb_4bit_compute_dtype=torch.bfloat16,
-            )
-        model = AutoModelForCausalLM.from_pretrained(
-            config["model_path"], **load_args
-        )
-        return PeftModel.from_pretrained(
-            model, config.get("adapter_path", config["output_dir"])
-        )
 
     @staticmethod
     def get_entities(text):
