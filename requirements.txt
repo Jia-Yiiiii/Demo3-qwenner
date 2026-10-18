@@ -1,0 +1,8 @@
+torch==2.9.1
+transformers==5.5.3
+peft==0.18.0
+bitsandbytes==0.50.2
+safetensors==0.7.0
+tqdm==4.67.3
+swanlab==0.10.0
+modelscope==1.40.1
