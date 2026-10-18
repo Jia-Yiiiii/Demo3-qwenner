@@ -4,14 +4,7 @@ from torch.utils.data import DataLoader, Dataset
 from template import NER_TEMPLATE
 
 class NERSFTDataset(Dataset):
-    def __init__(
-        self,
-        file,
-        tokenizer,
-        max_seq_length,
-        system_prompt=None,
-        is_train=True,
-    ):
+    def __init__(self,file,tokenizer,max_seq_length,system_prompt=None,is_train=True):
         self.tokenizer = tokenizer
         self.max_seq_length = max_seq_length
         self.system_prompt = system_prompt
@@ -64,7 +57,6 @@ class NERSFTDataset(Dataset):
                     "input_ids": full_ids,
                     "prompt_ids": prompt_ids,
                     "labels": labels,
-                    "sentence": sentence,
                     "entities": gold_entities,
                     "prompt_len": prompt_len,
                 }
@@ -99,7 +91,6 @@ class NERSFTDataset(Dataset):
             "input_ids": torch.tensor(padded_input_ids, dtype=torch.long),
             "attention_mask": torch.tensor(padded_mask, dtype=torch.long),
             "labels": torch.tensor(padded_labels, dtype=torch.long),
-            "sentences": [sample["sentence"] for sample in batch],
             "entities": [sample["entities"] for sample in batch],
             "prompt_len": torch.tensor([sample["prompt_len"] for sample in batch], dtype=torch.long),
         }
